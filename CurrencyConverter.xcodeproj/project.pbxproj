@@ -16,6 +16,7 @@
 		B4FA58E42B6FB8F20089505A /* CurrencyConverterUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA58E32B6FB8F20089505A /* CurrencyConverterUITestsLaunchTests.swift */; };
 		B4FA58F22B6FB9F50089505A /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA58F12B6FB9F50089505A /* Color.swift */; };
 		B4FA58F42B6FC51D0089505A /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA58F32B6FC51D0089505A /* ErrorView.swift */; };
+		B4FA58F62B6FC9750089505A /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FA58F52B6FC9750089505A /* Currency.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		B4FA58E32B6FB8F20089505A /* CurrencyConverterUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B4FA58F12B6FB9F50089505A /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B4FA58F32B6FC51D0089505A /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		B4FA58F52B6FC9750089505A /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 			children = (
 				B4FA58F02B6FB9910089505A /* Extensions */,
 				B4FA58C62B6FB8F10089505A /* CurrencyConverterApp.swift */,
+				B4FA58F52B6FC9750089505A /* Currency.swift */,
 				B4FA58C82B6FB8F10089505A /* ContentView.swift */,
 				B4FA58F32B6FC51D0089505A /* ErrorView.swift */,
 				B4FA58CA2B6FB8F20089505A /* Assets.xcassets */,
@@ -272,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4FA58C92B6FB8F10089505A /* ContentView.swift in Sources */,
+				B4FA58F62B6FC9750089505A /* Currency.swift in Sources */,
 				B4FA58C72B6FB8F10089505A /* CurrencyConverterApp.swift in Sources */,
 				B4FA58F22B6FB9F50089505A /* Color.swift in Sources */,
 				B4FA58F42B6FC51D0089505A /* ErrorView.swift in Sources */,

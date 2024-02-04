@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+    @State var currencies = CurrencyState.currencies
     @State var amount: String = "100.0"
-    @State var fromCurrency: String = "USD"
-    @State var toCurrency: String = "INR"
+    @State var fromCurrency: Currency = CurrencyState.currencies[0]
+    @State var toCurrency: Currency = CurrencyState.currencies[1]
     
     var body: some View {
         VStack(spacing: 20) {
@@ -50,8 +50,9 @@ struct ContentView: View {
                 Text("From Currency")
                 Spacer()
                 Picker("From Currency", selection: $fromCurrency) {
-                    Text("USD")
-                    Text("INR")
+                    ForEach(currencies, id: \.code) { cur in
+                        Text(cur.code).tag(cur)
+                    }
                 }
             }
             
@@ -59,13 +60,14 @@ struct ContentView: View {
                 Text("To Currency")
                 Spacer()
                 Picker("To Currency", selection: $toCurrency) {
-                    Text("INR")
-                    Text("USD")
+                    ForEach(currencies, id: \.code) { cur in
+                        Text(cur.code).tag(cur)
+                    }
                 }
             }
             
             Button(action: {
-//                Do conversion
+                convertCurrency()
             }, label: {
                 Text("Convert")
                     .frame(width: 350, height: 50)
@@ -79,6 +81,13 @@ struct ContentView: View {
         .padding(.leading, 30)
         .padding(.trailing, 30)
     }
+    
+    func convertCurrency() -> Void {
+        print("From Currency", fromCurrency.code)
+        print("To Currency", toCurrency.code)
+        print("Convert this amount", amount)
+    }
+    
 }
 
 #Preview {
