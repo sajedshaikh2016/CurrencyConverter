@@ -8,14 +8,76 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var amount: String = "100.0"
+    @State var fromCurrency: String = "USD"
+    @State var toCurrency: String = "INR"
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 20) {
+            Text("Currency Converter")
+                .font(.system(size: 22, weight: .medium))
+                .foregroundStyle(Color.appColor)
+                .padding()
+            
+            Image("currency-exchange")
+                .resizable()
+                .frame(width: 100, height: 100)
+            
+            Text("Your Converted Amount")
+                .font(.system(.title3))
+            
+            HStack {
+                Text("$100.0")
+                    .font(.title)
+                    .foregroundStyle(Color.white)
+            }.frame(width: 350, height: 80)
+                .background(Color.appColor)
+                .clipShape(.rect(cornerRadius: 12))
+            
+            VStack(alignment: .leading) {
+                Text("Convert Amount").font(.title3).padding()
+                
+                TextField("", text: $amount)
+                    .font(.system(size: 22))
+                    .padding(10)
+                    .frame(width: 350, height: 50)
+                    .background(.gray.opacity(0.2))
+                    .clipShape(.rect(cornerRadius: 12))
+            }
+            
+            HStack {
+                Text("From Currency")
+                Spacer()
+                Picker("From Currency", selection: $fromCurrency) {
+                    Text("USD")
+                    Text("INR")
+                }
+            }
+            
+            HStack {
+                Text("To Currency")
+                Spacer()
+                Picker("To Currency", selection: $toCurrency) {
+                    Text("INR")
+                    Text("USD")
+                }
+            }
+            
+            Button(action: {
+//                Do conversion
+            }, label: {
+                Text("Convert")
+                    .frame(width: 350, height: 50)
+                    .foregroundStyle(Color.white)
+                    .background(Color.appColor)
+                    .clipShape(.rect(cornerRadius: 12))
+            })
+            
         }
-        .padding()
+        .padding(.top, 30)
+        .padding(.leading, 30)
+        .padding(.trailing, 30)
     }
 }
 
