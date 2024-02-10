@@ -10,8 +10,20 @@ import SwiftUI
 struct ContentView: View {
     @State var currencies = CurrencyState.currencies
     @State var amount: String = "100.0"
+    @State var ConvertedAmount: String? = nil
     @State var fromCurrency: Currency = CurrencyState.currencies[0]
     @State var toCurrency: Currency = CurrencyState.currencies[1]
+    
+    @ObservedObject var errorDelegate = ExchangeRateDelegate()
+    
+    var formatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 2
+        formatter.decimalSeparator = "."
+        return formatter
+    }
     
     var body: some View {
         VStack(spacing: 20) {
@@ -28,7 +40,7 @@ struct ContentView: View {
                 .font(.system(.title3))
             
             HStack {
-                Text("$100.0")
+                Text(getConvertedAmountString())
                     .font(.title)
                     .foregroundStyle(Color.white)
             }.frame(width: 350, height: 80)
@@ -82,10 +94,32 @@ struct ContentView: View {
         .padding(.trailing, 30)
     }
     
+    func getConvertedAmountString() -> String {
+        return ConvertedAmount ?? "\(fromCurrency.symbol) \(amount)"
+    }
+    
     func convertCurrency() -> Void {
-        print("From Currency", fromCurrency.code)
-        print("To Currency", toCurrency.code)
-        print("Convert this amount", amount)
+//        print("From Currency", fromCurrency.code)
+//        print("To Currency", toCurrency.code)
+//        print("Convert this amount", amount)
+        
+        guard let floatAmount = formatter.number(from: amount) as? Float else {
+            return
+        }
+        
+        DispatchQueue.global(qos: .background).async {
+            let rateManager = ExchangeRateManager()
+            rateManager.delegate = errorDelegate
+            rateManager.fetchRates(for: fromCurrency.code, toCurrency: toCurrency.code) { result in
+                if let exchangeRate = result {
+                    let convertedAmountFloat = exchangeRate.rate * floatAmount
+                    let convertedAmountString = formatter.string(from: NSNumber(value: convertedAmountFloat)) ?? "0.00"
+                    DispatchQueue.main.async {
+                        self.ConvertedAmount = "\(toCurrency.symbol) \(convertedAmountString)"
+                    }
+                }
+            }
+        }
     }
     
 }
