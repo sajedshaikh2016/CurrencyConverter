@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var fromCurrency: Currency = CurrencyState.currencies[0]
     @State var toCurrency: Currency = CurrencyState.currencies[1]
     @State var isLoading: Bool = false
+    @State var showErrorScreen: Bool = false
     
     @ObservedObject var errorDelegate = ExchangeRateDelegate()
     
@@ -94,9 +95,16 @@ struct ContentView: View {
             })
             
         }
-        .padding(.top, 30)
-        .padding(.leading, 30)
-        .padding(.trailing, 30)
+        .padding(.top, 30).padding(.leading, 30).padding(.trailing, 30)
+        .fullScreenCover(isPresented: $showErrorScreen) {
+            ErrorView()
+        }
+        .onChange(of: errorDelegate.isErrorSate) { oldValue, newValue in
+            if newValue {
+                isLoading = false
+                showErrorScreen = true
+            }
+        }
     }
     
     func getConvertedAmountString() -> String {

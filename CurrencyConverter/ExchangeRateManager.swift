@@ -9,7 +9,7 @@ import Foundation
 
 class ExchangeRateManager {
     public var delegate: ExchangeRateResponseDelegate? = nil
-    static let apiKey = "fca_live_XWg7uuzsNizgYFGoNR8vzc21T2N4MYTtIdFxaXUr"
+    static let apiKey = "--fca_live_XWg7uuzsNizgYFGoNR8vzc21T2N4MYTtIdFxaXUr"
     let url = "https://api.freecurrencyapi.com/v1/latest?apikey=\(ExchangeRateManager.apiKey)"
     
     func fetchRates(for currency: String, toCurrency: String, completion: @escaping (_ exchangeRate: ExchangeRate?) -> Void) {
@@ -41,7 +41,11 @@ class ExchangeRateManager {
                     completion(rate)
                 }
             } else {
-                // TODO - Handle decode error
+                self.handleDecodeError()
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
             }
             
         } // End of task
@@ -56,7 +60,7 @@ class ExchangeRateManager {
             let exchangeRateResponse = try decoder.decode(ExchangeRateResponse.self, from: json)
             return exchangeRateResponse.toExchangeRate(from: currency, to: toCurrency)
         } catch {
-            self.handleDecodeError(error)
+            self.handleDecodeError()
             return nil
         }
     }
@@ -70,7 +74,8 @@ class ExchangeRateManager {
         delegate?.requestFailedWith(error: error, type: .server)
     }
     
-    private func handleDecodeError(_ error: Error) {
+    private func handleDecodeError() {
+        let error = NSError(domain: "Decode Error", code: 141)
         delegate?.requestFailedWith(error: error, type: .decode)
     }
 }
