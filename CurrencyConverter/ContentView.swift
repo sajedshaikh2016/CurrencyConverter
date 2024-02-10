@@ -13,6 +13,7 @@ struct ContentView: View {
     @State var ConvertedAmount: String? = nil
     @State var fromCurrency: Currency = CurrencyState.currencies[0]
     @State var toCurrency: Currency = CurrencyState.currencies[1]
+    @State var isLoading: Bool = false
     
     @ObservedObject var errorDelegate = ExchangeRateDelegate()
     
@@ -40,9 +41,13 @@ struct ContentView: View {
                 .font(.system(.title3))
             
             HStack {
-                Text(getConvertedAmountString())
-                    .font(.title)
-                    .foregroundStyle(Color.white)
+                if isLoading {
+                    ProgressView()
+                } else {
+                    Text(getConvertedAmountString())
+                        .font(.title)
+                        .foregroundStyle(Color.white)
+                }
             }.frame(width: 350, height: 80)
                 .background(Color.appColor)
                 .clipShape(.rect(cornerRadius: 12))
@@ -99,13 +104,10 @@ struct ContentView: View {
     }
     
     func convertCurrency() -> Void {
-//        print("From Currency", fromCurrency.code)
-//        print("To Currency", toCurrency.code)
-//        print("Convert this amount", amount)
-        
         guard let floatAmount = formatter.number(from: amount) as? Float else {
             return
         }
+        isLoading = true
         
         DispatchQueue.global(qos: .background).async {
             let rateManager = ExchangeRateManager()
@@ -115,6 +117,7 @@ struct ContentView: View {
                     let convertedAmountFloat = exchangeRate.rate * floatAmount
                     let convertedAmountString = formatter.string(from: NSNumber(value: convertedAmountFloat)) ?? "0.00"
                     DispatchQueue.main.async {
+                        isLoading = false
                         self.ConvertedAmount = "\(toCurrency.symbol) \(convertedAmountString)"
                     }
                 }
